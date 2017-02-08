@@ -1506,12 +1506,6 @@ func (h *RequestHeader) AppendBytes(dst []byte) []byte {
 		return append(dst, h.rawHeaders...)
 	}
 
-	userAgent := h.UserAgent()
-	if len(userAgent) == 0 {
-		userAgent = defaultUserAgent
-	}
-	dst = appendHeaderLine(dst, strUserAgent, userAgent)
-
 	host := h.Host()
 	if len(host) > 0 {
 		dst = appendHeaderLine(dst, strHost, host)
@@ -1525,7 +1519,7 @@ func (h *RequestHeader) AppendBytes(dst []byte) []byte {
 		dst = appendHeaderLine(dst, strContentType, contentType)
 
 		if len(h.contentLengthBytes) > 0 {
-			dst = appendHeaderLine(dst, strContentLength, h.contentLengthBytes)
+			dst = appendHeaderLine(dst, []byte("content-length"), h.contentLengthBytes)
 		}
 	} else if len(contentType) > 0 {
 		dst = appendHeaderLine(dst, strContentType, contentType)
